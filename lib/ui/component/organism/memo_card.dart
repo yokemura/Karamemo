@@ -25,7 +25,7 @@ class MemoCard extends StatelessWidget {
             Expanded(
               child: _LeftColumn(memo),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 8),
             JudgeIconCombo(memo.judge),
           ],
         ),
@@ -47,6 +47,7 @@ class _LeftColumn extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DateLabel(text: memo.date.displayString),
+        const SizedBox(height: 8),
         switch (type) {
           _DataTypeFull(
             shopName: final shop,
@@ -116,7 +117,7 @@ class _DataAreaFull extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SubItemLabel(text: shopName),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         ItemLabel(text: text),
       ],
     );
@@ -138,7 +139,7 @@ class _DataAreaNameAndSpiciness extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SubItemLabel(text: name),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         ItemLabel(text: nominalSpiciness),
       ],
     );

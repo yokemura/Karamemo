@@ -13,12 +13,17 @@ class HomeController extends StateNotifier<HomeState> {
     final list = [
       Memo(
         date: DateTime.now(),
-        shopName: 'SAMA',
-        nominalSpiciness: '4',
+        itemName: '辛さが選べるチキン',
         judge: Judge.goodSpiciness,
       ),
+      Memo(
+        date: DateTime.now(),
+        shopName: 'マジックスパイス',
+        itemName: '天空',
+        judge: Judge.tooHotToEat,
+      ),
     ];
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
     state = HomeStateListing(list: list);
   }
 }
