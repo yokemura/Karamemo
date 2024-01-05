@@ -32,7 +32,9 @@ class HomePage extends HookConsumerWidget {
           HomeStateEmpty() => _EmptyBody(),
         },
         floatingActionButton:
-            FloatingActionButton(onPressed: () => {}, tooltip: 'Increment'));
+            FloatingActionButton(
+              onPressed: () => {}, tooltip: '新規メモ作成',
+              child: const Icon(Icons.add_rounded)),);
   }
 }
 
