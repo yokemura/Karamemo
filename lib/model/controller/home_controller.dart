@@ -1,4 +1,4 @@
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../state/home_state.dart';
 import '../view_data/memo.dart';
@@ -12,7 +12,7 @@ class HomeController extends StateNotifier<HomeState> {
         date: DateTime.now(),
         shopName: 'SAMA',
         nominalSpiciness: '4',
-        judge: 3,
+        judge: Judge.goodSpiciness,
       ),
     ];
     state = HomeStateListing(list: list);

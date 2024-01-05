@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:karamemo/ui/home_page.dart';
+import 'package:karamemo/ui/page/home_page.dart';
 import 'color_schemes.g.dart';
 
 void main() {
