@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:karamemo/ui/component/atom/labels.dart';
 import 'package:karamemo/ui/component/molecule/judge_icon_combo.dart';
+import 'package:intl/intl.dart';
 
 import '../../../model/view_data/memo.dart';
 
@@ -21,7 +22,7 @@ class MemoCard extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         child: Row(
           children: [
-            Flexible(
+            Expanded(
               child: _LeftColumn(memo),
             ),
             const SizedBox(width: 12),
@@ -43,8 +44,9 @@ class _LeftColumn extends StatelessWidget {
     final type = _DataType.of(memo);
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DateLabel(text: memo.date.toString()),
+        DateLabel(text: memo.date.displayString),
         switch (type) {
           _DataTypeFull(
             shopName: final shop,
@@ -111,6 +113,7 @@ class _DataAreaFull extends StatelessWidget {
     final text = '$itemName($nominalSpiciness)';
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SubItemLabel(text: shopName),
         const SizedBox(height: 12),
@@ -132,6 +135,7 @@ class _DataAreaNameAndSpiciness extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SubItemLabel(text: name),
         const SizedBox(height: 12),
@@ -151,9 +155,18 @@ class _DataAreaNameOnly extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ItemLabel(text: name),
       ],
     );
+  }
+}
+
+extension DisplayString on DateTime {
+  String get displayString {
+    DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+    String str = outputFormat.format(this);
+    return str;
   }
 }
