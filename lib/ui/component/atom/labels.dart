@@ -1,5 +1,49 @@
 import 'package:flutter/material.dart';
 
+// ------------------------------------------------------------------------
+//
+// Generic
+//
+// ------------------------------------------------------------------------
+class BodyLabel extends StatelessWidget {
+  final String text;
+
+  const BodyLabel({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) => Text(
+    text,
+    key: key,
+    style: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      color: Theme.of(context).colorScheme.onBackground,
+    ),
+  );
+}
+
+class CaptionLabel extends StatelessWidget {
+  final String text;
+
+  const CaptionLabel({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) => Text(
+    text,
+    key: key,
+    style: TextStyle(
+      fontSize: 10,
+      fontWeight: FontWeight.normal,
+      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
+    ),
+  );
+}
+
+// ------------------------------------------------------------------------
+//
+// For Item Card
+//
+// ------------------------------------------------------------------------
 class ItemLabel extends StatelessWidget {
   final String text;
 

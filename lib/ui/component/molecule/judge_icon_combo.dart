@@ -18,12 +18,15 @@ class JudgeIconCombo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        JudgeIcon(judge),
-        const SizedBox(height: 4),
-        SubIconLabel(text: text),
-      ],
+    return SizedBox(
+      width: 64,
+      child: Column(
+        children: [
+          JudgeIcon(judge),
+          const SizedBox(height: 4),
+          SubIconLabel(text: text),
+        ],
+      ),
     );
   }
 }

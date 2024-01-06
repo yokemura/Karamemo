@@ -5,10 +5,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:karamemo/model/state/home_state.dart';
+import 'package:karamemo/ui/component/atom/create_memo_button_body.dart';
+import 'package:karamemo/ui/component/molecule/memo_type_combo.dart';
 import 'package:karamemo/ui/component/organism/memo_card.dart';
 
 import '../../model/controller/home_controller.dart';
 import '../../model/view_data/memo.dart';
+import '../../model/view_data/memo_type.dart';
 
 class HomePage extends HookConsumerWidget {
   @override
@@ -31,10 +34,31 @@ class HomePage extends HookConsumerWidget {
           HomeStateListing(list: final list) => _ListBody(list),
           HomeStateEmpty() => _EmptyBody(),
         },
-        floatingActionButton:
-            FloatingActionButton(
-              onPressed: () => {}, tooltip: '新規メモ作成',
-              child: const Icon(Icons.add_rounded)),);
+        floatingActionButton: PopupMenuButton(
+          itemBuilder: _makePopupItems,
+          onSelected: _onMenuSelected,
+          child: const CreateMemoButtonBody(),
+        ));
+  }
+
+  List<PopupMenuEntry<dynamic>> _makePopupItems(BuildContext context) {
+    const item1 = PopupMenuItem<MemoType>(
+      value: MemoType.shopOnly,
+      child: MemoTypeCombo('お店の辛さメモ', 'スープカレー屋の辛さなど'),
+    );
+    const item2 = PopupMenuItem<MemoType>(
+      value: MemoType.shopAndItem,
+      child: MemoTypeCombo('メニューの辛さメモ', '専門店じゃないお店に辛いメニューがあるときなど'),
+    );
+    const item3 = PopupMenuItem<MemoType>(
+      value: MemoType.itemOnly,
+      child: MemoTypeCombo('商品の辛さメモ', 'コンビニやスーパーの辛い商品など'),
+    );
+    return [item1, item2, item3];
+  }
+
+  void _onMenuSelected(dynamic type) {
+    print("selected $type");
   }
 }
 
