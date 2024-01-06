@@ -11,16 +11,46 @@ class HomeController extends StateNotifier<HomeState> {
 
   void getMemo() async {
     final list = [
+      // full
       Memo(
         date: DateTime.now(),
+        shopName: 'ビール天国',
         itemName: '辛さが選べるチキン',
+        nominalSpiciness: '激辛',
         judge: Judge.goodSpiciness,
       ),
+      // shop with level
       Memo(
         date: DateTime.now(),
         shopName: 'マジックスパイス',
-        itemName: '天空',
+        nominalSpiciness: '天空',
         judge: Judge.tooHotToEat,
+      ),
+      // item with level
+      Memo(
+        date: DateTime.now(),
+        itemName: 'まるマート 選べるまるチキン',
+        nominalSpiciness: '激辛',
+        judge: Judge.aBitSpicy,
+      ),
+      // shop only
+      Memo(
+        date: DateTime.now(),
+        shopName: 'メニューが一種類の店',
+        judge: Judge.goodSpiciness,
+      ),
+      // shop only
+      Memo(
+        date: DateTime.now(),
+        itemName: 'かくマート 激辛チキン',
+        judge: Judge.notSpicyAtAll,
+      ),
+      // shop and item
+      Memo(
+        date: DateTime.now(),
+        shopName: 'ビール天国',
+        itemName: '激辛スンドゥブ',
+        judge: Judge.aBitTooHot,
       ),
     ];
     await Future.delayed(const Duration(seconds: 1));
