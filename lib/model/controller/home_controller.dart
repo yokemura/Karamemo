@@ -13,6 +13,7 @@ class HomeController extends StateNotifier<HomeState> {
     final list = [
       // full
       Memo(
+        id: '1',
         date: DateTime.now(),
         shopName: 'ビール天国',
         itemName: '辛さが選べるチキン',
@@ -21,6 +22,7 @@ class HomeController extends StateNotifier<HomeState> {
       ),
       // shop with level
       Memo(
+        id: '2',
         date: DateTime.now(),
         shopName: 'マジックスパイス',
         nominalSpiciness: '天空',
@@ -28,6 +30,7 @@ class HomeController extends StateNotifier<HomeState> {
       ),
       // item with level
       Memo(
+        id: '3',
         date: DateTime.now(),
         itemName: 'まるマート 選べるまるチキン',
         nominalSpiciness: '激辛',
@@ -35,18 +38,21 @@ class HomeController extends StateNotifier<HomeState> {
       ),
       // shop only
       Memo(
+        id: '4',
         date: DateTime.now(),
         shopName: 'メニューが一種類の店',
         judge: Judge.goodSpiciness,
       ),
       // shop only
       Memo(
+        id: '5',
         date: DateTime.now(),
         itemName: 'かくマート 激辛チキン',
         judge: Judge.notSpicyAtAll,
       ),
       // shop and item
       Memo(
+        id: '6',
         date: DateTime.now(),
         shopName: 'ビール天国',
         itemName: '激辛スンドゥブ',

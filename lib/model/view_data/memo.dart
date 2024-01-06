@@ -15,6 +15,7 @@ enum Judge {
 @immutable
 class Memo {
   const Memo({
+    required this.id,
     required this.date,
     this.shopName,
     this.itemName,
@@ -22,6 +23,7 @@ class Memo {
     required this.judge,
   });
 
+  final String id;
   final DateTime date;
   final String? shopName;
   final String? itemName;
