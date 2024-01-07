@@ -83,7 +83,7 @@ class CreateMemoPage extends HookConsumerWidget {
                         const SizedBox(height: 24),
                       ],
                       RadioCombo<bool>(
-                        title: '辛さレベル有無（大辛, 辛さ1〜10 等）',
+                        title: '辛さレベル有無',
                         items: [
                           RadioComboItem('あり', true),
                           RadioComboItem('なし', false),
@@ -91,6 +91,17 @@ class CreateMemoPage extends HookConsumerWidget {
                         value: isSpicinessAvailable,
                         onSelected: pageController.setSpicinessAvailable,
                       ),
+                      if (isSpicinessAvailable) ...[
+                        LabeledTextField(
+                          title: '辛さレベル（「大辛」「10」等）',
+                          textField: MaterialTextField(
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.next,
+                            onChanged: pageController.onSpicinessNameChanged,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
                     ],
                   ),
                 ),

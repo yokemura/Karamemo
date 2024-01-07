@@ -28,6 +28,9 @@ class RadioWithText<T> extends StatelessWidget {
           width: 4,
         ),
         Text(text),
+        const SizedBox(
+          width: 24,
+        ),
       ],
     );
   }

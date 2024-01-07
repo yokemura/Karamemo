@@ -28,9 +28,7 @@ class RadioCombo<T> extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (title != null) Text(title!),
-        Wrap(
-          spacing: 10,
-          direction: Axis.horizontal,
+        Row(
           children: items
               .map((e) => RadioWithText<T>(
                     text: e.label,
