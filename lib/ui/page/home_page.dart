@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:karamemo/model/state/home_state.dart';
 import 'package:karamemo/ui/component/atom/create_memo_button_body.dart';
@@ -9,6 +10,7 @@ import 'package:karamemo/ui/component/organism/memo_card.dart';
 import '../../model/controller/home_controller.dart';
 import '../../model/view_data/memo.dart';
 import '../../model/view_data/memo_type.dart';
+import '../route.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
@@ -35,7 +37,11 @@ class HomePage extends HookConsumerWidget {
         },
         floatingActionButton: PopupMenuButton(
           itemBuilder: _makePopupItems,
-          onSelected: _onMenuSelected,
+          onSelected: (type) {
+            final path = PageName.createMemo.defaultPath;
+            final param = (type as MemoType).name;
+            context.push('$path/$param');
+          },
           child: const CreateMemoButtonBody(),
         ));
   }
@@ -54,10 +60,6 @@ class HomePage extends HookConsumerWidget {
       child: MemoTypeCombo('商品の辛さメモ', 'コンビニやスーパーの辛い商品など'),
     );
     return [item1, item2, item3];
-  }
-
-  void _onMenuSelected(dynamic type) {
-    print("selected $type");
   }
 }
 
