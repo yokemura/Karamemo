@@ -8,6 +8,7 @@ import 'package:material_text_fields/labeled_text_field.dart';
 import 'package:material_text_fields/material_text_fields.dart';
 
 import '../../model/view_data/memo_type.dart';
+import '../component/organism/radio_combo.dart';
 
 class CreateMemoPage extends HookConsumerWidget {
   const CreateMemoPage({
@@ -21,6 +22,9 @@ class CreateMemoPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isAcceptable = ref.watch(
         createMemoPageControllerProvider.select((value) => value.isAcceptable));
+    final isSpicinessAvailable = ref.watch(createMemoPageControllerProvider
+        .select((value) => value.isSpicinessAvailable));
+
     final pageController = ref.watch(createMemoPageControllerProvider.notifier);
     final showsShopNameField = memoType != MemoType.itemOnly;
     final showsItemNameField = memoType != MemoType.shopOnly;
@@ -56,7 +60,7 @@ class CreateMemoPage extends HookConsumerWidget {
                   padding: const EdgeInsets.all(24),
                   child: Column(
                     children: [
-                      if (showsShopNameField)
+                      if (showsShopNameField) ...[
                         LabeledTextField(
                           title: 'お店の名前',
                           textField: MaterialTextField(
@@ -65,7 +69,9 @@ class CreateMemoPage extends HookConsumerWidget {
                             onChanged: pageController.onShopNameChanged,
                           ),
                         ),
-                      if (showsItemNameField)
+                        const SizedBox(height: 24),
+                      ],
+                      if (showsItemNameField) ...[
                         LabeledTextField(
                           title: itemNameString,
                           textField: MaterialTextField(
@@ -73,7 +79,18 @@ class CreateMemoPage extends HookConsumerWidget {
                             textInputAction: TextInputAction.next,
                             onChanged: pageController.onShopNameChanged,
                           ),
-                        )
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                      RadioCombo<bool>(
+                        title: '辛さレベル有無（大辛, 辛さ1〜10 等）',
+                        items: [
+                          RadioComboItem('あり', true),
+                          RadioComboItem('なし', false),
+                        ],
+                        value: isSpicinessAvailable,
+                        onSelected: pageController.setSpicinessAvailable,
+                      ),
                     ],
                   ),
                 ),

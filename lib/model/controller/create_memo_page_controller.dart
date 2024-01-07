@@ -14,6 +14,10 @@ class CreateMemoPageController extends StateNotifier<CreateMemoPageState> {
     state = state.copyWith(type: type);
   }
 
+  void setSpicinessAvailable(bool isAvailable) {
+    state = state.copyWith(isSpicinessAvailable: isAvailable);
+  }
+
   void onShopNameChanged(String name) {
     state = state.copyWith(shopName: name);
   }
