@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 // import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,15 +11,31 @@ import '../../model/view_data/memo_type.dart';
 
 class CreateMemoPage extends HookConsumerWidget {
   const CreateMemoPage({
-    required MemoType memoType,
+    required this.memoType,
     super.key,
   });
+
+  final MemoType memoType;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isAcceptable = ref.watch(
         createMemoPageControllerProvider.select((value) => value.isAcceptable));
     final pageController = ref.watch(createMemoPageControllerProvider.notifier);
+    final showsShopNameField = memoType != MemoType.itemOnly;
+    final showsItemNameField = memoType != MemoType.shopOnly;
+    final itemNameString = switch (memoType) {
+      MemoType.itemOnly => '商品名',
+      _ => 'メニュー名',
+    };
+
+    useEffect(() {
+      return null;
+    }, []);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      pageController.setMemoType(memoType);
+    });
     /* 初期値反映のときに使う予定
     final shopFieldController = useTextEditingController();
     final  itemFieldController = useTextEditingController();
@@ -30,17 +47,42 @@ class CreateMemoPage extends HookConsumerWidget {
         elevation: 2,
         title: const Text("新規メモ作成"),
       ),
-      body: SingleChildScrollView(
+      body: SafeArea(
         child: Column(
           children: [
-            LabeledTextField(
-              title: 'お店の名前',
-              textField: MaterialTextField(
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                onChanged: pageController.onShopNameChanged,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      if (showsShopNameField)
+                        LabeledTextField(
+                          title: 'お店の名前',
+                          textField: MaterialTextField(
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.next,
+                            onChanged: pageController.onShopNameChanged,
+                          ),
+                        ),
+                      if (showsItemNameField)
+                        LabeledTextField(
+                          title: itemNameString,
+                          textField: MaterialTextField(
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.next,
+                            onChanged: pageController.onShopNameChanged,
+                          ),
+                        )
+                    ],
+                  ),
+                ),
               ),
-            )
+            ),
+            ElevatedButton(
+              onPressed: isAcceptable ? () {} : null,
+              child: const Text('登録'),
+            ),
           ],
         ),
       ),

@@ -9,23 +9,23 @@ enum PageName {
   home,
   createMemo;
 
-  String get defaultPath => '/$this.name';
+  String get path => '/$this.name';
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
       routes: [
         GoRoute(
             name: PageName.home.name,
-            path: PageName.home.defaultPath,
+            path: PageName.home.path,
             builder: (context, state) => const HomePage()),
         GoRoute(
             name: PageName.createMemo.name,
-            path: '${PageName.createMemo.defaultPath}/:type',
+            path: '${PageName.createMemo.path}/:type',
             builder: (context, state) {
               final memoTypeStr = state.pathParameters['type'];
               final memoType = MemoType.values.byName(memoTypeStr!);
               return CreateMemoPage(memoType: memoType);
             }),
       ],
-      initialLocation: PageName.home.defaultPath,
+      initialLocation: PageName.home.path,
     ));

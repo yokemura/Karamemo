@@ -38,7 +38,7 @@ class HomePage extends HookConsumerWidget {
         floatingActionButton: PopupMenuButton(
           itemBuilder: _makePopupItems,
           onSelected: (type) {
-            final path = PageName.createMemo.defaultPath;
+            final path = PageName.createMemo.path;
             final param = (type as MemoType).name;
             context.push('$path/$param');
           },
