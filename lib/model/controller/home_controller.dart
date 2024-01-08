@@ -1,15 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:karamemo/model/repository/memo_repository.dart';
 
 import '../state/home_state.dart';
 import '../view_data/memo.dart';
 
-final homeControllerProvider =
-    StateNotifierProvider<HomeController, HomeState>((ref) => HomeController());
+final homeControllerProvider = StateNotifierProvider<HomeController, HomeState>(
+    (ref) => HomeController(repository: ref.watch(memoRepositoryProvider)));
 
 class HomeController extends StateNotifier<HomeState> {
-  HomeController() : super(HomeStateInitial());
+  HomeController({
+    required this.repository,
+  }) : super(HomeStateInitial());
+
+  final MemoRepository repository;
 
   void getMemo() async {
+    /*
     final list = [
       // full
       Memo(
@@ -60,6 +66,12 @@ class HomeController extends StateNotifier<HomeState> {
       ),
     ];
     await Future.delayed(const Duration(seconds: 1));
-    state = HomeStateListing(list: list);
+     */
+    final list = await repository.fetch();
+    if (list.isEmpty) {
+      state = HomeStateEmpty();
+    } else {
+      state = HomeStateListing(list: list);
+    }
   }
 }

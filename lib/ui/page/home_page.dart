@@ -37,10 +37,11 @@ class HomePage extends HookConsumerWidget {
         },
         floatingActionButton: PopupMenuButton(
           itemBuilder: _makePopupItems,
-          onSelected: (type) {
+          onSelected: (type) async {
             final path = PageName.createMemo.path;
             final param = (type as MemoType).name;
-            context.push('$path/$param');
+            await context.push('$path/$param');
+            controller.getMemo();
           },
           child: const CreateMemoButtonBody(),
         ));
