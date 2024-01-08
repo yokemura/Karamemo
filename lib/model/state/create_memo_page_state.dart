@@ -7,7 +7,8 @@ import '../view_data/memo_type.dart';
 @immutable
 class CreateMemoPageState {
   const CreateMemoPageState({
-    required this.originalMemo,
+    required this.type,
+    this.originalMemo,
     this.shopName,
     this.itemName,
     this.isSpicinessAvailable = true,
@@ -15,15 +16,24 @@ class CreateMemoPageState {
     this.judge,
   });
 
-  final Memo originalMemo;
+  CreateMemoPageState.withOriginalMemo(Memo original) : this(
+    type: original.memoType,
+    originalMemo: original,
+    shopName: original.shopName,
+    itemName: original.itemName,
+    isSpicinessAvailable: original.nominalSpiciness != null,
+    nominalSpiciness: original.nominalSpiciness,
+    judge: original.judge,
+  );
+
+  final MemoType type;
+  final Memo? originalMemo;
   final String? shopName;
   final String? itemName;
   final bool isSpicinessAvailable;
   final String? nominalSpiciness;
 
   final Judge? judge;
-
-  MemoType get type => originalMemo.memoType;
 
   bool get isAcceptable =>
       _isShopNameAcceptable &&
@@ -57,6 +67,7 @@ class CreateMemoPageState {
     Judge? judge,
   }) {
     return CreateMemoPageState(
+      type: type,
       originalMemo: originalMemo,
       shopName: shopName ?? this.shopName,
       itemName: itemName ?? this.itemName,

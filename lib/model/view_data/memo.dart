@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:uuid/uuid.dart';
 
 import 'memo_type.dart';
 
@@ -23,7 +22,6 @@ enum Judge {
 @freezed
 class Memo with _$Memo {
   const factory Memo({
-    required MemoType memoType,
     required String id,
     required DateTime date,
     String? shopName,
@@ -33,10 +31,22 @@ class Memo with _$Memo {
   }) = _Memo;
 
   factory Memo.fromJson(Map<String, Object?> json) => _$MemoFromJson(json);
+}
 
-  static Memo scratch({required MemoType memoType}) => Memo(
-      memoType: memoType,
-      id: const Uuid().v4(),
-      date: DateTime.now(),
-      judge: Judge.goodSpiciness);
+extension TypeDistinction on Memo {
+  MemoType get memoType {
+    if (shopName != null) {
+      if (itemName != null) {
+        return MemoType.shopAndItem;
+      } else {
+        return MemoType.shopOnly;
+      }
+    } else {
+      if (itemName != null) {
+        return MemoType.itemOnly;
+      } else {
+        throw StateError('Invalid Memo structure');
+      }
+    }
+  }
 }

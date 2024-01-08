@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:karamemo/model/state/home_state.dart';
+import 'package:karamemo/model/view_data/page_parameters.dart';
 import 'package:karamemo/ui/component/atom/create_memo_button_body.dart';
 import 'package:karamemo/ui/component/molecule/memo_type_combo.dart';
 import 'package:karamemo/ui/component/organism/memo_card.dart';
@@ -39,7 +40,8 @@ class HomePage extends HookConsumerWidget {
           itemBuilder: _makePopupItems,
           onSelected: (type) async {
             final path = PageName.createMemo.path;
-            await context.push(path, extra: Memo.scratch(memoType: type));
+            await context.push(path,
+                extra: CreateMemoPageParameter(memoType: type));
             controller.getMemo();
           },
           child: const CreateMemoButtonBody(),
@@ -79,9 +81,9 @@ class _ListBody extends StatelessWidget {
                 memo: list[index],
                 onTap: () async {
                   await context.push(
-                  PageName.memoDetail.path,
-                  extra: list[index],
-                );
+                    PageName.memoDetail.path,
+                    extra: list[index],
+                  );
                   controller.getMemo();
                 },
               )),

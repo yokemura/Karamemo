@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 // import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:karamemo/model/controller/create_memo_page_controller.dart';
+import 'package:karamemo/model/view_data/page_parameters.dart';
 import 'package:karamemo/ui/component/molecule/judge_icon_combo_full_size.dart';
 import 'package:material_text_fields/labeled_text_field.dart';
 import 'package:material_text_fields/material_text_fields.dart';
@@ -17,23 +18,23 @@ import '../component/organism/text_radio_combo.dart';
 
 class CreateMemoPage extends HookConsumerWidget {
   const CreateMemoPage({
-    required this.originalMemo,
+    required this.parameter,
     super.key,
   });
 
-  final Memo originalMemo;
+  final CreateMemoPageParameter parameter;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isAcceptable = ref.watch(
-        createMemoPageControllerProvider(originalMemo)
+        createMemoPageControllerProvider(parameter)
             .select((value) => value.isAcceptable));
     final isSpicinessAvailable = ref.watch(
-        createMemoPageControllerProvider(originalMemo)
+        createMemoPageControllerProvider(parameter)
             .select((value) => value.isSpicinessAvailable));
-    final judge = ref.watch(createMemoPageControllerProvider(originalMemo)
+    final judge = ref.watch(createMemoPageControllerProvider(parameter)
         .select((value) => value.judge));
-    final memoType = originalMemo.memoType;
+    final memoType = parameter.memoType;
 
     final pageTitle = switch (memoType) {
       MemoType.shopOnly => 'お店のメモ作成',
@@ -41,12 +42,10 @@ class CreateMemoPage extends HookConsumerWidget {
       MemoType.itemOnly => '商品のメモ作成',
     };
     final pageController =
-        ref.watch(createMemoPageControllerProvider(originalMemo).notifier);
+        ref.watch(createMemoPageControllerProvider(parameter).notifier);
 
     useEffect(() {
-      Future.microtask(() {
-        pageController.copyValuesFromOriginalMemo();
-      });
+      // なにかあれば
       return null;
     }, []);
 
@@ -67,7 +66,7 @@ class CreateMemoPage extends HookConsumerWidget {
                     children: [
                       const FormSectionIndex(text: 'メニューの情報'),
                       _ItemInfoForm(
-                        originalMemo: originalMemo,
+                        parameter: parameter,
                         isSpicinessAvailable: isSpicinessAvailable,
                         pageController: pageController,
                       ),
@@ -102,18 +101,19 @@ class CreateMemoPage extends HookConsumerWidget {
 
 class _ItemInfoForm extends HookWidget {
   const _ItemInfoForm({
-    required this.originalMemo,
+    required this.parameter,
     required this.isSpicinessAvailable,
     required this.pageController,
   });
 
-  final Memo originalMemo;
+  final CreateMemoPageParameter parameter;
   final bool isSpicinessAvailable;
   final CreateMemoPageController pageController;
 
   @override
   Widget build(BuildContext context) {
-    final memoType = originalMemo.memoType;
+    final memoType = parameter.memoType;
+    final originalMemo = parameter.originalMemo;
 
     final showsShopNameField = memoType != MemoType.itemOnly;
     final showsItemNameField = memoType != MemoType.shopOnly;
@@ -123,11 +123,11 @@ class _ItemInfoForm extends HookWidget {
     };
 
     final shopFieldController =
-        useTextEditingController(text: originalMemo.shopName);
+        useTextEditingController(text: originalMemo?.shopName);
     final itemFieldController =
-        useTextEditingController(text: originalMemo.itemName);
+        useTextEditingController(text: originalMemo?.itemName);
     final spicinessFieldController =
-        useTextEditingController(text: originalMemo.nominalSpiciness);
+        useTextEditingController(text: originalMemo?.nominalSpiciness);
 
     return Column(
       children: [

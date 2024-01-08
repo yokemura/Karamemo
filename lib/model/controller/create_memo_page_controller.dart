@@ -4,32 +4,27 @@ import 'package:karamemo/model/state/create_memo_page_state.dart';
 import 'package:uuid/uuid.dart';
 
 import '../view_data/memo.dart';
+import '../view_data/page_parameters.dart';
 
 final createMemoPageControllerProvider = StateNotifierProvider.autoDispose
-    .family<CreateMemoPageController, CreateMemoPageState, Memo>(
-  (ref, memo) => CreateMemoPageController(
+    .family<CreateMemoPageController, CreateMemoPageState,
+        CreateMemoPageParameter>(
+  (ref, parameter) => CreateMemoPageController(
     repository: ref.read(memoRepositoryProvider),
-    originalMemo: memo,
+    parameter: parameter,
   ),
 );
 
 class CreateMemoPageController extends StateNotifier<CreateMemoPageState> {
   CreateMemoPageController({
     required this.repository,
-    required this.originalMemo,
-  }) : super(CreateMemoPageState(originalMemo: originalMemo));
+    required this.parameter,
+  }) : super(parameter.originalMemo == null
+            ? CreateMemoPageState(type: parameter.memoType)
+            : CreateMemoPageState.withOriginalMemo(parameter.originalMemo!));
 
   final MemoRepository repository;
-  final Memo originalMemo;
-
-  void copyValuesFromOriginalMemo() {
-    state = state.copyWith(
-      shopName: originalMemo.shopName,
-      itemName: originalMemo.itemName,
-      nominalSpiciness: originalMemo.nominalSpiciness,
-      isSpicinessAvailable: originalMemo.nominalSpiciness != null,
-    );
-  }
+  final CreateMemoPageParameter parameter;
 
   void setSpicinessAvailable(bool isAvailable) {
     state = state.copyWith(isSpicinessAvailable: isAvailable);
@@ -52,9 +47,11 @@ class CreateMemoPageController extends StateNotifier<CreateMemoPageState> {
   }
 
   void saveMemo() async {
+    final original = state.originalMemo;
+    final id = original == null ? const Uuid().v4() : original.id;
+
     final memo = Memo(
-      memoType: originalMemo.memoType,
-      id: originalMemo.id,
+      id: id,
       date: DateTime.now(),
       shopName: state.shopName,
       itemName: state.itemName,

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:karamemo/model/view_data/page_parameters.dart';
 import 'package:karamemo/ui/page/create_memo_page.dart';
 import 'package:karamemo/ui/page/home_page.dart';
 import 'package:karamemo/ui/page/memo_detail_page.dart';
@@ -25,8 +26,8 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
             name: PageName.createMemo.name,
             path: PageName.createMemo.path,
             builder: (context, state) {
-              final memo = state.extra as Memo;
-              return CreateMemoPage(originalMemo: memo);
+              final parameter = state.extra as CreateMemoPageParameter;
+              return CreateMemoPage(parameter: parameter);
             }),
         GoRoute(
             name: PageName.memoDetail.name,
