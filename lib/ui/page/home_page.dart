@@ -32,7 +32,7 @@ class HomePage extends HookConsumerWidget {
         ),
         body: switch (state) {
           HomeStateInitial() => _EmptyBody(),
-          HomeStateListing(list: final list) => _ListBody(list),
+          HomeStateListing(list: final list) => _ListBody(list, controller),
           HomeStateEmpty() => _EmptyBody(),
         },
         floatingActionButton: PopupMenuButton(
@@ -65,9 +65,10 @@ class HomePage extends HookConsumerWidget {
 }
 
 class _ListBody extends StatelessWidget {
-  const _ListBody(this.list);
+  const _ListBody(this.list, this.controller);
 
   final List<Memo> list;
+  final HomeController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -77,10 +78,13 @@ class _ListBody extends StatelessWidget {
           itemCount: list.length,
           itemBuilder: (context, index) => MemoCard(
                 memo: list[index],
-                onTap: () => context.push(
+                onTap: () async {
+                  await context.push(
                   PageName.memoDetail.path,
                   extra: list[index],
-                ),
+                );
+                  controller.getMemo();
+                },
               )),
     );
   }

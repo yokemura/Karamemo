@@ -17,7 +17,11 @@ class MemoRepository {
   }
 
   Future<void> remove(Memo memo) async {
-    _list.remove(memo);
+    final index = _list.indexWhere((e) => e.id == memo.id);
+    if (index < 0) {
+      return;
+    }
+    _list.removeAt(index);
   }
 
   Future<void> update(Memo memo) async {

@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:karamemo/model/controller/memo_detail_page_controller.dart';
 import 'package:karamemo/ui/component/organism/memo_detail_combo.dart';
@@ -20,11 +20,27 @@ class MemoDetailPage extends HookConsumerWidget {
         .select((state) => state.relatedMemo));
     final controller =
         ref.watch(memoDetailPageControllerProvider(memo).notifier);
+    ref.listen(memoDetailPageControllerProvider(memo).select((s) => s.deleteCompleted), (_, completed) {
+      context.pop();
+    });
 
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
         title: const Text('メモ詳細'),
+        actions: [
+          IconButton(
+            tooltip: 'メモを削除',
+            onPressed: () => _deleteButtonPressed(context, controller),
+            icon: const Icon(Icons.delete),
+          ),
+          IconButton(
+              tooltip: 'メモを編集', onPressed: () {}, icon: const Icon(Icons.edit)),
+          IconButton(
+              tooltip: 'コピーを作成',
+              onPressed: () {},
+              icon: const Icon(Icons.copy)),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -36,6 +52,37 @@ class MemoDetailPage extends HookConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _deleteButtonPressed(
+    BuildContext context,
+    MemoDetailPageController controller,
+  ) {
+    AlertDialog alert = AlertDialog(
+      title: const Text("このメモを削除しますか？"),
+      actions: [
+        MaterialButton(
+          child: const Text("キャンセル"),
+          onPressed: () {
+            context.pop(); // close dialog
+          },
+        ),
+        MaterialButton(
+          child: const Text("削除"),
+          onPressed: () {
+            context.pop(); // close dialog
+            controller.deleteMemo();
+          },
+        ),
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

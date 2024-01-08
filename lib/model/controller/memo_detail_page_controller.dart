@@ -17,4 +17,9 @@ class MemoDetailPageController extends StateNotifier<MemoDetailPageState> {
   }) : super(MemoDetailPageState(memo: memo));
 
   final MemoRepository repository;
+
+  void deleteMemo() async {
+    await repository.remove(state.memo);
+    state = state.copyWith(deleteCompleted: true);
+  }
 }
