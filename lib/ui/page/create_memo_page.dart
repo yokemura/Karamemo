@@ -17,40 +17,38 @@ import '../component/organism/text_radio_combo.dart';
 
 class CreateMemoPage extends HookConsumerWidget {
   const CreateMemoPage({
-    required this.memoType,
+    required this.originalMemo,
     super.key,
   });
 
-  final MemoType memoType;
+  final Memo originalMemo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isAcceptable = ref.watch(
-        createMemoPageControllerProvider.select((value) => value.isAcceptable));
-    final isSpicinessAvailable = ref.watch(createMemoPageControllerProvider
-        .select((value) => value.isSpicinessAvailable));
-    final judge = ref.watch(createMemoPageControllerProvider
+        createMemoPageControllerProvider(originalMemo)
+            .select((value) => value.isAcceptable));
+    final isSpicinessAvailable = ref.watch(
+        createMemoPageControllerProvider(originalMemo)
+            .select((value) => value.isSpicinessAvailable));
+    final judge = ref.watch(createMemoPageControllerProvider(originalMemo)
         .select((value) => value.judge));
+    final memoType = originalMemo.memoType;
 
     final pageTitle = switch (memoType) {
       MemoType.shopOnly => 'お店のメモ作成',
       MemoType.shopAndItem => 'メニューのメモ作成',
       MemoType.itemOnly => '商品のメモ作成',
     };
-    final pageController = ref.watch(createMemoPageControllerProvider.notifier);
+    final pageController =
+        ref.watch(createMemoPageControllerProvider(originalMemo).notifier);
 
     useEffect(() {
+      Future.microtask(() {
+        pageController.copyValuesFromOriginalMemo();
+      });
       return null;
     }, []);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      pageController.setMemoType(memoType);
-    });
-    /* 初期値反映のときに使う予定
-    final shopFieldController = useTextEditingController();
-    final  itemFieldController = useTextEditingController();
-    final  spicinessFieldController = useTextEditingController();
-  */
 
     return Scaffold(
       appBar: AppBar(
@@ -69,7 +67,7 @@ class CreateMemoPage extends HookConsumerWidget {
                     children: [
                       const FormSectionIndex(text: 'メニューの情報'),
                       _ItemInfoForm(
-                        memoType: memoType,
+                        originalMemo: originalMemo,
                         isSpicinessAvailable: isSpicinessAvailable,
                         pageController: pageController,
                       ),
@@ -86,10 +84,12 @@ class CreateMemoPage extends HookConsumerWidget {
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(50),
                 ),
-                onPressed: isAcceptable ? () {
-                  pageController.saveMemo();
-                  context.pop();
-                } : null,
+                onPressed: isAcceptable
+                    ? () {
+                        pageController.saveMemo();
+                        context.pop();
+                      }
+                    : null,
                 child: const Text('登録'),
               ),
             ),
@@ -100,19 +100,21 @@ class CreateMemoPage extends HookConsumerWidget {
   }
 }
 
-class _ItemInfoForm extends StatelessWidget {
+class _ItemInfoForm extends HookWidget {
   const _ItemInfoForm({
-    required this.memoType,
+    required this.originalMemo,
     required this.isSpicinessAvailable,
     required this.pageController,
   });
 
-  final MemoType memoType;
+  final Memo originalMemo;
   final bool isSpicinessAvailable;
   final CreateMemoPageController pageController;
 
   @override
   Widget build(BuildContext context) {
+    final memoType = originalMemo.memoType;
+
     final showsShopNameField = memoType != MemoType.itemOnly;
     final showsItemNameField = memoType != MemoType.shopOnly;
     final itemNameString = switch (memoType) {
@@ -120,12 +122,20 @@ class _ItemInfoForm extends StatelessWidget {
       _ => 'メニュー名',
     };
 
+    final shopFieldController =
+        useTextEditingController(text: originalMemo.shopName);
+    final itemFieldController =
+        useTextEditingController(text: originalMemo.itemName);
+    final spicinessFieldController =
+        useTextEditingController(text: originalMemo.nominalSpiciness);
+
     return Column(
       children: [
         if (showsShopNameField) ...[
           LabeledTextField(
             title: 'お店の名前',
             textField: MaterialTextField(
+              controller: shopFieldController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
               onChanged: pageController.onShopNameChanged,
@@ -137,6 +147,7 @@ class _ItemInfoForm extends StatelessWidget {
           LabeledTextField(
             title: itemNameString,
             textField: MaterialTextField(
+              controller: itemFieldController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
               onChanged: pageController.onItemNameChanged,
@@ -157,6 +168,7 @@ class _ItemInfoForm extends StatelessWidget {
           LabeledTextField(
             title: '辛さレベル（「大辛」「10」等）',
             textField: MaterialTextField(
+              controller: spicinessFieldController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
               onChanged: pageController.onSpicinessNameChanged,
@@ -171,7 +183,6 @@ class _ItemInfoForm extends StatelessWidget {
 
 class _JudgeForm extends StatelessWidget {
   const _JudgeForm({
-    super.key,
     required this.judge,
     required this.pageController,
   });

@@ -4,21 +4,31 @@ import 'package:karamemo/model/state/create_memo_page_state.dart';
 import 'package:uuid/uuid.dart';
 
 import '../view_data/memo.dart';
-import '../view_data/memo_type.dart';
 
-final createMemoPageControllerProvider = StateNotifierProvider
-    .autoDispose<CreateMemoPageController, CreateMemoPageState>((ref) =>
-        CreateMemoPageController(repository: ref.read(memoRepositoryProvider)));
+final createMemoPageControllerProvider = StateNotifierProvider.autoDispose
+    .family<CreateMemoPageController, CreateMemoPageState, Memo>(
+  (ref, memo) => CreateMemoPageController(
+    repository: ref.read(memoRepositoryProvider),
+    originalMemo: memo,
+  ),
+);
 
 class CreateMemoPageController extends StateNotifier<CreateMemoPageState> {
   CreateMemoPageController({
     required this.repository,
-  }) : super(const CreateMemoPageState());
+    required this.originalMemo,
+  }) : super(CreateMemoPageState(originalMemo: originalMemo));
 
   final MemoRepository repository;
+  final Memo originalMemo;
 
-  void setMemoType(MemoType type) {
-    state = state.copyWith(type: type);
+  void copyValuesFromOriginalMemo() {
+    state = state.copyWith(
+      shopName: originalMemo.shopName,
+      itemName: originalMemo.itemName,
+      nominalSpiciness: originalMemo.nominalSpiciness,
+      isSpicinessAvailable: originalMemo.nominalSpiciness != null,
+    );
   }
 
   void setSpicinessAvailable(bool isAvailable) {
@@ -43,6 +53,7 @@ class CreateMemoPageController extends StateNotifier<CreateMemoPageState> {
 
   void saveMemo() async {
     final memo = Memo(
+      memoType: originalMemo.memoType,
       id: const Uuid().v4(),
       date: DateTime.now(),
       shopName: state.shopName,
@@ -50,6 +61,6 @@ class CreateMemoPageController extends StateNotifier<CreateMemoPageState> {
       nominalSpiciness: state.nominalSpiciness,
       judge: state.judge!,
     );
-    await repository.add(memo);
+    await repository.update(memo);
   }
 }

@@ -20,6 +20,7 @@ Memo _$MemoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Memo {
+  MemoType get memoType => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
   String? get shopName => throw _privateConstructorUsedError;
@@ -38,7 +39,8 @@ abstract class $MemoCopyWith<$Res> {
       _$MemoCopyWithImpl<$Res, Memo>;
   @useResult
   $Res call(
-      {String id,
+      {MemoType memoType,
+      String id,
       DateTime date,
       String? shopName,
       String? itemName,
@@ -59,6 +61,7 @@ class _$MemoCopyWithImpl<$Res, $Val extends Memo>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? memoType = null,
     Object? id = null,
     Object? date = null,
     Object? shopName = freezed,
@@ -67,6 +70,10 @@ class _$MemoCopyWithImpl<$Res, $Val extends Memo>
     Object? judge = null,
   }) {
     return _then(_value.copyWith(
+      memoType: null == memoType
+          ? _value.memoType
+          : memoType // ignore: cast_nullable_to_non_nullable
+              as MemoType,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -103,7 +110,8 @@ abstract class _$$MemoImplCopyWith<$Res> implements $MemoCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id,
+      {MemoType memoType,
+      String id,
       DateTime date,
       String? shopName,
       String? itemName,
@@ -121,6 +129,7 @@ class __$$MemoImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? memoType = null,
     Object? id = null,
     Object? date = null,
     Object? shopName = freezed,
@@ -129,6 +138,10 @@ class __$$MemoImplCopyWithImpl<$Res>
     Object? judge = null,
   }) {
     return _then(_$MemoImpl(
+      memoType: null == memoType
+          ? _value.memoType
+          : memoType // ignore: cast_nullable_to_non_nullable
+              as MemoType,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -161,7 +174,8 @@ class __$$MemoImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MemoImpl with DiagnosticableTreeMixin implements _Memo {
   const _$MemoImpl(
-      {required this.id,
+      {required this.memoType,
+      required this.id,
       required this.date,
       this.shopName,
       this.itemName,
@@ -171,6 +185,8 @@ class _$MemoImpl with DiagnosticableTreeMixin implements _Memo {
   factory _$MemoImpl.fromJson(Map<String, dynamic> json) =>
       _$$MemoImplFromJson(json);
 
+  @override
+  final MemoType memoType;
   @override
   final String id;
   @override
@@ -186,7 +202,7 @@ class _$MemoImpl with DiagnosticableTreeMixin implements _Memo {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Memo(id: $id, date: $date, shopName: $shopName, itemName: $itemName, nominalSpiciness: $nominalSpiciness, judge: $judge)';
+    return 'Memo(memoType: $memoType, id: $id, date: $date, shopName: $shopName, itemName: $itemName, nominalSpiciness: $nominalSpiciness, judge: $judge)';
   }
 
   @override
@@ -194,6 +210,7 @@ class _$MemoImpl with DiagnosticableTreeMixin implements _Memo {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Memo'))
+      ..add(DiagnosticsProperty('memoType', memoType))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('date', date))
       ..add(DiagnosticsProperty('shopName', shopName))
@@ -207,6 +224,8 @@ class _$MemoImpl with DiagnosticableTreeMixin implements _Memo {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MemoImpl &&
+            (identical(other.memoType, memoType) ||
+                other.memoType == memoType) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.date, date) || other.date == date) &&
             (identical(other.shopName, shopName) ||
@@ -220,8 +239,8 @@ class _$MemoImpl with DiagnosticableTreeMixin implements _Memo {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, date, shopName, itemName, nominalSpiciness, judge);
+  int get hashCode => Object.hash(runtimeType, memoType, id, date, shopName,
+      itemName, nominalSpiciness, judge);
 
   @JsonKey(ignore: true)
   @override
@@ -239,7 +258,8 @@ class _$MemoImpl with DiagnosticableTreeMixin implements _Memo {
 
 abstract class _Memo implements Memo {
   const factory _Memo(
-      {required final String id,
+      {required final MemoType memoType,
+      required final String id,
       required final DateTime date,
       final String? shopName,
       final String? itemName,
@@ -248,6 +268,8 @@ abstract class _Memo implements Memo {
 
   factory _Memo.fromJson(Map<String, dynamic> json) = _$MemoImpl.fromJson;
 
+  @override
+  MemoType get memoType;
   @override
   String get id;
   @override

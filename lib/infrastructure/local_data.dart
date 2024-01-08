@@ -26,10 +26,14 @@ class LocalData {
       return [];
     }
 
-    final memos = stringArray.map((str) {
-      final jsonMap = jsonDecode(str);
-      return Memo.fromJson(jsonMap);
-    }).toList();
-    return memos;
+    try {
+      final memos = stringArray.map((str) {
+        final jsonMap = jsonDecode(str);
+        return Memo.fromJson(jsonMap);
+      }).toList();
+      return memos;
+    } catch (e) {
+      return [];
+    }
   }
 }

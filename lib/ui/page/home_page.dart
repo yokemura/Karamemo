@@ -39,8 +39,7 @@ class HomePage extends HookConsumerWidget {
           itemBuilder: _makePopupItems,
           onSelected: (type) async {
             final path = PageName.createMemo.path;
-            final param = (type as MemoType).name;
-            await context.push('$path/$param');
+            await context.push(path, extra: Memo.scratch(memoType: type));
             controller.getMemo();
           },
           child: const CreateMemoButtonBody(),

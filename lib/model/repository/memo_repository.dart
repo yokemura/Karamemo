@@ -16,13 +16,6 @@ class MemoRepository {
   Future<List<Memo>> fetch() async =>
     localData.loadMemos();
 
-
-  Future<void> add(Memo memo) async {
-    final list = await localData.loadMemos();
-    list.add(memo);
-    localData.saveMemos(list);
-  }
-
   Future<void> remove(Memo memo) async {
     final list = await localData.loadMemos();
     final index = list.indexWhere((e) => e.id == memo.id);
@@ -33,6 +26,7 @@ class MemoRepository {
     localData.saveMemos(list);
   }
 
+  // Update or add; Update if already exists, add if not
   Future<void> update(Memo memo) async {
     final list = await localData.loadMemos();
     final index = list.indexWhere((e) => e.id == memo.id);

@@ -23,11 +23,10 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
             builder: (context, state) => const HomePage()),
         GoRoute(
             name: PageName.createMemo.name,
-            path: '${PageName.createMemo.path}/:type',
+            path: PageName.createMemo.path,
             builder: (context, state) {
-              final memoTypeStr = state.pathParameters['type'];
-              final memoType = MemoType.values.byName(memoTypeStr!);
-              return CreateMemoPage(memoType: memoType);
+              final memo = state.extra as Memo;
+              return CreateMemoPage(originalMemo: memo);
             }),
         GoRoute(
             name: PageName.memoDetail.name,

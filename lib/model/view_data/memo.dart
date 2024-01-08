@@ -1,7 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uuid/uuid.dart';
+
+import 'memo_type.dart';
 
 part 'memo.freezed.dart';
+
 part 'memo.g.dart';
 
 enum Judge {
@@ -19,6 +23,7 @@ enum Judge {
 @freezed
 class Memo with _$Memo {
   const factory Memo({
+    required MemoType memoType,
     required String id,
     required DateTime date,
     String? shopName,
@@ -28,4 +33,10 @@ class Memo with _$Memo {
   }) = _Memo;
 
   factory Memo.fromJson(Map<String, Object?> json) => _$MemoFromJson(json);
+
+  static Memo scratch({required MemoType memoType}) => Memo(
+      memoType: memoType,
+      id: const Uuid().v4(),
+      date: DateTime.now(),
+      judge: Judge.goodSpiciness);
 }
