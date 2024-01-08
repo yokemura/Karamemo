@@ -1,34 +1,46 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../infrastructure/local_data.dart';
 import '../view_data/memo.dart';
 
-final memoRepositoryProvider =
-    Provider<MemoRepository>((ref) => MemoRepository());
+final memoRepositoryProvider = Provider<MemoRepository>(
+    (ref) => MemoRepository(localData: ref.read(localDataProvider)));
 
 class MemoRepository {
-  final List<Memo> _list = [];
+  MemoRepository({
+    required this.localData,
+  });
 
-  Future<List<Memo>> fetch() async {
-    return _list;
-  }
+  final LocalData localData;
+
+  Future<List<Memo>> fetch() async =>
+    localData.loadMemos();
+
 
   Future<void> add(Memo memo) async {
-    _list.add(memo);
+    final list = await localData.loadMemos();
+    list.add(memo);
+    localData.saveMemos(list);
   }
 
   Future<void> remove(Memo memo) async {
-    final index = _list.indexWhere((e) => e.id == memo.id);
+    final list = await localData.loadMemos();
+    final index = list.indexWhere((e) => e.id == memo.id);
     if (index < 0) {
       return;
     }
-    _list.removeAt(index);
+    list.removeAt(index);
+    localData.saveMemos(list);
   }
 
   Future<void> update(Memo memo) async {
-    final index = _list.indexWhere((e) => e.id == memo.id);
+    final list = await localData.loadMemos();
+    final index = list.indexWhere((e) => e.id == memo.id);
     if (index < 0) {
-      return;
+      list.add(memo);
+    } else {
+      list[index] = memo;
     }
-    _list[index] = memo;
+    localData.saveMemos(list);
   }
 }
