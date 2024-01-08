@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import '../molecule/radio_with_text.dart';
+import '../molecule/radio_with_widget.dart';
 
 class RadioComboItem<T> {
-  RadioComboItem(this.label, this.value);
+  RadioComboItem(this.child, this.value);
 
-  final String label;
-  final T value;
+  final Widget child;
+  final T? value;
 }
 
 class RadioCombo<T> extends StatelessWidget {
@@ -20,7 +20,7 @@ class RadioCombo<T> extends StatelessWidget {
   final String? title;
   final List<RadioComboItem> items;
   final T? value;
-  final Function(T) onSelected;
+  final Function(T?) onSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -28,24 +28,24 @@ class RadioCombo<T> extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (title != null) Text(title!),
-        Row(
-          children: items
-              .map((e) => RadioWithText<T>(
-                    text: e.label,
-                    value: e.value,
-                    groupValue: value,
-                    onChanged: _onChanged,
-                  ))
+          ...items
+              .map((e) => RadioWithWidget<T>(
+            widget: e.child,
+            value: e.value,
+            groupValue: value,
+            onChanged: _onChanged,
+          ))
               .toList(),
-        ),
       ],
     );
   }
 
-  // TODO: Allow deselect by option
   void _onChanged(T? newValue) {
     if (newValue != null) {
       onSelected(newValue);
+    }
+    if (newValue == value) {
+      onSelected(null);
     }
   }
 }

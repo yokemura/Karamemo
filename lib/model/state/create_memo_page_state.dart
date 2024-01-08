@@ -10,7 +10,7 @@ class CreateMemoPageState {
     this.type = MemoType.shopAndItem,
     this.shopName,
     this.itemName,
-    this.isSpicinessAvailable = false,
+    this.isSpicinessAvailable = true,
     this.nominalSpiciness,
     this.judge,
   });
@@ -24,7 +24,10 @@ class CreateMemoPageState {
   final Judge? judge;
 
   bool get isAcceptable =>
-      _isShopNameAcceptable && _isItemNameAcceptable && _isSpicinessAcceptable;
+      _isShopNameAcceptable &&
+      _isItemNameAcceptable &&
+      _isSpicinessAcceptable &&
+      judge != null;
 
   bool get _isShopNameAcceptable => switch (type) {
         MemoType.itemOnly => true,

@@ -5,6 +5,23 @@ import 'package:flutter/material.dart';
 // Generic
 //
 // ------------------------------------------------------------------------
+class IndexLabel extends StatelessWidget {
+  final String text;
+
+  const IndexLabel({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) => Text(
+    text,
+    key: key,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Theme.of(context).colorScheme.onBackground,
+    ),
+  );
+}
+
 class BodyLabel extends StatelessWidget {
   final String text;
 

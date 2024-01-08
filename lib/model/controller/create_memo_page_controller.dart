@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:karamemo/model/state/create_memo_page_state.dart';
 
+import '../view_data/memo.dart';
 import '../view_data/memo_type.dart';
 
 final createMemoPageControllerProvider = StateNotifierProvider.autoDispose<
@@ -28,5 +29,9 @@ class CreateMemoPageController extends StateNotifier<CreateMemoPageState> {
 
   void onSpicinessNameChanged(String name) {
     state = state.copyWith(nominalSpiciness: name);
+  }
+
+  void onJudgeChanged(Judge? judge) {
+    state = state.copyWith(judge: judge);
   }
 }
