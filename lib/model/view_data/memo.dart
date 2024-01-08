@@ -1,4 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'memo.freezed.dart';
+part 'memo.g.dart';
 
 enum Judge {
   notSpicyAtAll(1),
@@ -12,21 +16,16 @@ enum Judge {
   const Judge(this.level);
 }
 
-@immutable
-class Memo {
-  const Memo({
-    required this.id,
-    required this.date,
-    this.shopName,
-    this.itemName,
-    this.nominalSpiciness,
-    required this.judge,
-  });
+@freezed
+class Memo with _$Memo {
+  const factory Memo({
+    required String id,
+    required DateTime date,
+    String? shopName,
+    String? itemName,
+    String? nominalSpiciness,
+    required Judge judge,
+  }) = _Memo;
 
-  final String id;
-  final DateTime date;
-  final String? shopName;
-  final String? itemName;
-  final String? nominalSpiciness;
-  final Judge judge;
+  factory Memo.fromJson(Map<String, Object?> json) => _$MemoFromJson(json);
 }
