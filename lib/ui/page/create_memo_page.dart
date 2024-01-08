@@ -25,6 +25,11 @@ class CreateMemoPage extends HookConsumerWidget {
     final isSpicinessAvailable = ref.watch(createMemoPageControllerProvider
         .select((value) => value.isSpicinessAvailable));
 
+    final pageTitle = switch (memoType) {
+      MemoType.shopOnly => 'お店のメモ作成',
+      MemoType.shopAndItem => 'メニューのメモ作成',
+      MemoType.itemOnly => '商品のメモ作成',
+    };
     final pageController = ref.watch(createMemoPageControllerProvider.notifier);
     final showsShopNameField = memoType != MemoType.itemOnly;
     final showsItemNameField = memoType != MemoType.shopOnly;
@@ -49,7 +54,7 @@ class CreateMemoPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
-        title: const Text("新規メモ作成"),
+        title: Text(pageTitle),
       ),
       body: SafeArea(
         child: Column(
@@ -107,9 +112,15 @@ class CreateMemoPage extends HookConsumerWidget {
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: isAcceptable ? () {} : null,
-              child: const Text('登録'),
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50),
+                ),
+                onPressed: isAcceptable ? () {} : null,
+                child: const Text('登録'),
+              ),
             ),
           ],
         ),

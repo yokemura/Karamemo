@@ -3,9 +3,9 @@ import 'package:karamemo/model/state/create_memo_page_state.dart';
 
 import '../view_data/memo_type.dart';
 
-final createMemoPageControllerProvider =
-    StateNotifierProvider<CreateMemoPageController, CreateMemoPageState>(
-        (ref) => CreateMemoPageController());
+final createMemoPageControllerProvider = StateNotifierProvider.autoDispose<
+    CreateMemoPageController,
+    CreateMemoPageState>((ref) => CreateMemoPageController());
 
 class CreateMemoPageController extends StateNotifier<CreateMemoPageState> {
   CreateMemoPageController() : super(const CreateMemoPageState());
