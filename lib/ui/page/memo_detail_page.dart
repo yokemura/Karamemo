@@ -5,6 +5,7 @@ import 'package:karamemo/model/controller/memo_detail_page_controller.dart';
 import 'package:karamemo/ui/component/organism/memo_detail_combo.dart';
 
 import '../../model/view_data/memo.dart';
+import '../route.dart';
 
 class MemoDetailPage extends HookConsumerWidget {
   const MemoDetailPage({
@@ -35,7 +36,10 @@ class MemoDetailPage extends HookConsumerWidget {
             icon: const Icon(Icons.delete),
           ),
           IconButton(
-              tooltip: 'メモを編集', onPressed: () {}, icon: const Icon(Icons.edit)),
+              tooltip: 'メモを編集', onPressed: () async {
+            final path = PageName.createMemo.path;
+            await context.push(path, extra: memo);
+          }, icon: const Icon(Icons.edit)),
           IconButton(
               tooltip: 'コピーを作成',
               onPressed: () {},

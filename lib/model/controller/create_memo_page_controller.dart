@@ -54,7 +54,7 @@ class CreateMemoPageController extends StateNotifier<CreateMemoPageState> {
   void saveMemo() async {
     final memo = Memo(
       memoType: originalMemo.memoType,
-      id: const Uuid().v4(),
+      id: originalMemo.id,
       date: DateTime.now(),
       shopName: state.shopName,
       itemName: state.itemName,
