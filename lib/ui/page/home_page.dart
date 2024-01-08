@@ -75,7 +75,13 @@ class _ListBody extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       child: ListView.builder(
           itemCount: list.length,
-          itemBuilder: (context, index) => MemoCard(memo: list[index])),
+          itemBuilder: (context, index) => MemoCard(
+                memo: list[index],
+                onTap: () => context.push(
+                  PageName.memoDetail.path,
+                  extra: list[index],
+                ),
+              )),
     );
   }
 }

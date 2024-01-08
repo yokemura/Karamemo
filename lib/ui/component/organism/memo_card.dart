@@ -11,23 +11,28 @@ class MemoCard extends StatelessWidget {
   const MemoCard({
     super.key,
     required this.memo,
+    required this.onTap,
   });
 
   final Memo memo;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            Expanded(
-              child: _LeftColumn(memo),
-            ),
-            const SizedBox(width: 8),
-            JudgeIconCombo(memo.judge),
-          ],
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              Expanded(
+                child: _LeftColumn(memo),
+              ),
+              const SizedBox(width: 8),
+              JudgeIconCombo(memo.judge),
+            ],
+          ),
         ),
       ),
     );

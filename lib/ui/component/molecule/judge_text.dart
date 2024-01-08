@@ -8,4 +8,12 @@ extension JudgeText on Judge {
     Judge.aBitTooHot => 'ギリいける',
     Judge.tooHotToEat => '辛すぎ無理',
   };
+
+  String get emoji => switch (this) {
+    Judge.notSpicyAtAll => '😴',
+    Judge.aBitSpicy => '😐',
+    Judge.goodSpiciness => '😋',
+    Judge.aBitTooHot => '🤣',
+    Judge.tooHotToEat => '🥵',
+  };
 }

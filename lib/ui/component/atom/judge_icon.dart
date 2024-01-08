@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:karamemo/ui/component/molecule/judge_text.dart';
 
 import '../../../model/view_data/memo.dart';
 
@@ -7,18 +8,10 @@ class JudgeIcon extends StatelessWidget {
 
   final Judge judge;
 
-  String get icon => switch (judge) {
-    Judge.notSpicyAtAll => '😴',
-    Judge.aBitSpicy => '😐',
-    Judge.goodSpiciness => '😋',
-    Judge.aBitTooHot => '🤣',
-    Judge.tooHotToEat => '🥵',
-  };
-
   @override
   Widget build(BuildContext context) {
     return Text(
-      icon,
+      judge.emoji,
       style: const TextStyle(fontSize: 30),
     );
   }
