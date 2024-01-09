@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:karamemo/model/controller/memo_detail_page_controller.dart';
+import 'package:karamemo/model/view_data/page_parameters.dart';
 import 'package:karamemo/ui/component/organism/memo_detail_combo.dart';
 
 import '../../model/view_data/memo.dart';
@@ -21,7 +22,9 @@ class MemoDetailPage extends HookConsumerWidget {
         .select((state) => state.relatedMemo));
     final controller =
         ref.watch(memoDetailPageControllerProvider(memo).notifier);
-    ref.listen(memoDetailPageControllerProvider(memo).select((s) => s.deleteCompleted), (_, completed) {
+    ref.listen(
+        memoDetailPageControllerProvider(memo).select((s) => s.deleteCompleted),
+        (_, completed) {
       context.pop();
     });
 
@@ -36,10 +39,16 @@ class MemoDetailPage extends HookConsumerWidget {
             icon: const Icon(Icons.delete),
           ),
           IconButton(
-              tooltip: 'メモを編集', onPressed: () async {
-            final path = PageName.createMemo.path;
-            await context.push(path, extra: memo);
-          }, icon: const Icon(Icons.edit)),
+              tooltip: 'メモを編集',
+              onPressed: () async {
+                final path = PageName.createMemo.path;
+                final parameter = CreateMemoPageParameter(
+                  memoType: memo.memoType,
+                  originalMemo: memo,
+                );
+                await context.push(path, extra: parameter);
+              },
+              icon: const Icon(Icons.edit)),
           IconButton(
               tooltip: 'コピーを作成',
               onPressed: () {},
