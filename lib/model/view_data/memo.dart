@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 import 'memo_type.dart';
 
@@ -33,7 +34,7 @@ class Memo with _$Memo {
   factory Memo.fromJson(Map<String, Object?> json) => _$MemoFromJson(json);
 }
 
-extension TypeDistinction on Memo {
+extension MemoExtensions on Memo {
   MemoType get memoType {
     if (shopName != null) {
       if (itemName != null) {
@@ -49,4 +50,6 @@ extension TypeDistinction on Memo {
       }
     }
   }
+
+  Memo duplicated() => copyWith(id: const Uuid().v4());
 }

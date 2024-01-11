@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:karamemo/model/controller/memo_detail_page_controller.dart';
+import 'package:karamemo/model/state/memo_detail_page_state.dart';
 import 'package:karamemo/model/view_data/page_parameters.dart';
 import 'package:karamemo/ui/component/organism/memo_detail_combo.dart';
 
@@ -22,11 +23,14 @@ class MemoDetailPage extends HookConsumerWidget {
         .select((state) => state.relatedMemo));
     final controller =
         ref.watch(memoDetailPageControllerProvider(memo).notifier);
-    ref.listen(
-        memoDetailPageControllerProvider(memo).select((s) => s.deleteCompleted),
-        (_, completed) {
-      context.pop();
-    });
+    final resumeEvent = ref.watch(
+        memoDetailPageControllerProvider(memo).select((s) => s.resumeEvent));
+    switch(resumeEvent.value) {
+      case MemoDetailPageResumeEvent.pop:
+        Future.microtask(() => context.pop());
+      default:
+        break; // will reload
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -43,15 +47,26 @@ class MemoDetailPage extends HookConsumerWidget {
               onPressed: () async {
                 final path = PageName.createMemo.path;
                 final parameter = CreateMemoPageParameter(
+                  mode: CreateMemoPageMode.reedit,
                   memoType: memo.memoType,
                   originalMemo: memo,
                 );
                 await context.push(path, extra: parameter);
+                controller.triggerEvent(MemoDetailPageResumeEvent.reload);
               },
               icon: const Icon(Icons.edit)),
           IconButton(
               tooltip: 'コピーを作成',
-              onPressed: () {},
+              onPressed: () async {
+                final path = PageName.createMemo.path;
+                final parameter = CreateMemoPageParameter(
+                  mode: CreateMemoPageMode.editCopy,
+                  memoType: memo.memoType,
+                  originalMemo: memo.duplicated(),
+                );
+                await context.push(path, extra: parameter);
+                controller.triggerEvent(MemoDetailPageResumeEvent.pop);
+              },
               icon: const Icon(Icons.copy)),
         ],
       ),

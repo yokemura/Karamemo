@@ -41,7 +41,10 @@ class HomePage extends HookConsumerWidget {
           onSelected: (type) async {
             final path = PageName.createMemo.path;
             await context.push(path,
-                extra: CreateMemoPageParameter(memoType: type));
+                extra: CreateMemoPageParameter(
+                  mode: CreateMemoPageMode.scratch,
+                  memoType: type,
+                ));
             controller.getMemo();
           },
           child: const CreateMemoButtonBody(),

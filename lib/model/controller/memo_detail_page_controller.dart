@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:karamemo/model/state/memo_detail_page_state.dart';
 
 import '../repository/memo_repository.dart';
+import '../state/trigger.dart';
 import '../view_data/memo.dart';
 
 final memoDetailPageControllerProvider = StateNotifierProvider.family<
@@ -20,6 +21,12 @@ class MemoDetailPageController extends StateNotifier<MemoDetailPageState> {
 
   void deleteMemo() async {
     await repository.remove(state.memo);
-    state = state.copyWith(deleteCompleted: true);
+    state =
+        state.copyWith(backEvent: const Trigger(MemoDetailPageResumeEvent.pop));
+  }
+
+  void triggerEvent(MemoDetailPageResumeEvent event) {
+    state = state.copyWith(
+        backEvent: Trigger(event));
   }
 }
