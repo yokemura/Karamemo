@@ -59,12 +59,12 @@ class CreateMemoPage extends HookConsumerWidget {
         title: Text(pageTitle),
       ),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 96),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -81,20 +81,23 @@ class CreateMemoPage extends HookConsumerWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  onPressed: isAcceptable
+                      ? () {
+                          pageController
+                              .saveMemo()
+                              .then((newMemo) => context.pop(newMemo));
+                        }
+                      : null,
+                  child: const Text('登録'),
                 ),
-                onPressed: isAcceptable
-                    ? () {
-                        pageController
-                            .saveMemo()
-                            .then((newMemo) => context.pop(newMemo));
-                      }
-                    : null,
-                child: const Text('登録'),
               ),
             ),
           ],

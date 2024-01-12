@@ -76,21 +76,19 @@ class _ListBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return ListView.builder(
       padding: const EdgeInsets.all(24),
-      child: ListView.builder(
-          itemCount: list.length,
-          itemBuilder: (context, index) => MemoCard(
-                memo: list[index],
-                onTap: () async {
-                  await context.push(
-                    PageName.memoDetail.path,
-                    extra: list[index],
-                  );
-                  controller.getMemo();
-                },
-              )),
-    );
+        itemCount: list.length,
+        itemBuilder: (context, index) => MemoCard(
+              memo: list[index],
+              onTap: () async {
+                await context.push(
+                  PageName.memoDetail.path,
+                  extra: list[index],
+                );
+                controller.getMemo();
+              },
+            ));
   }
 }
 
