@@ -35,11 +35,16 @@ class CreateMemoPage extends HookConsumerWidget {
         .select((value) => value.judge));
     final memoType = parameter.memoType;
 
-    final pageTitle = switch (memoType) {
-      MemoType.shopOnly => 'お店のメモ作成',
-      MemoType.shopAndItem => 'メニューのメモ作成',
-      MemoType.itemOnly => '商品のメモ作成',
+    final pageTitle = switch (parameter.mode) {
+      CreateMemoPageMode.scratch => switch (memoType) {
+          MemoType.shopOnly => 'お店のメモ作成',
+          MemoType.shopAndItem => 'メニューのメモ作成',
+          MemoType.itemOnly => '商品のメモ作成',
+        },
+      CreateMemoPageMode.reedit => 'メモを編集',
+      CreateMemoPageMode.editCopy => 'コピーを作成',
     };
+
     final pageController =
         ref.watch(createMemoPageControllerProvider(parameter).notifier);
 
