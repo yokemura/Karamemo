@@ -46,7 +46,7 @@ class CreateMemoPageController extends StateNotifier<CreateMemoPageState> {
     state = state.copyWith(judge: judge);
   }
 
-  void saveMemo() async {
+  Future<Memo> saveMemo() async {
     final original = state.originalMemo;
     final id = original == null ? const Uuid().v4() : original.id;
 
@@ -59,5 +59,6 @@ class CreateMemoPageController extends StateNotifier<CreateMemoPageState> {
       judge: state.judge!,
     );
     await repository.update(memo);
+    return memo;
   }
 }

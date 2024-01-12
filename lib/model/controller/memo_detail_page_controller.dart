@@ -25,8 +25,7 @@ class MemoDetailPageController extends StateNotifier<MemoDetailPageState> {
         state.copyWith(backEvent: const Trigger(MemoDetailPageResumeEvent.pop));
   }
 
-  void triggerEvent(MemoDetailPageResumeEvent event) {
-    state = state.copyWith(
-        backEvent: Trigger(event));
+  void reload(Memo memo) {
+    state = state.copyWith(memo: memo);
   }
 }

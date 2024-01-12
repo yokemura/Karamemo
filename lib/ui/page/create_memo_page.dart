@@ -85,8 +85,8 @@ class CreateMemoPage extends HookConsumerWidget {
                 ),
                 onPressed: isAcceptable
                     ? () {
-                        pageController.saveMemo();
-                        context.pop();
+                        final newMemo = pageController.saveMemo();
+                        context.pop(newMemo);
                       }
                     : null,
                 child: const Text('登録'),
