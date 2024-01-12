@@ -1,35 +1,28 @@
-
 import 'package:flutter/cupertino.dart';
-import 'package:karamemo/model/state/trigger.dart';
 
 import '../view_data/memo.dart';
-
-enum MemoDetailPageResumeEvent {
-  reload,
-  pop,
-}
 
 @immutable
 class MemoDetailPageState {
   const MemoDetailPageState({
-    required this.memo,
+    this.memo,
     this.relatedMemo = const [],
-    this.resumeEvent = const Trigger<MemoDetailPageResumeEvent>(null),
+    this.shouldGoBack = false,
   });
 
-  final Memo memo;
+  final Memo? memo;
   final List<Memo> relatedMemo;
-  final Trigger<MemoDetailPageResumeEvent> resumeEvent;
+  final bool shouldGoBack;
 
   MemoDetailPageState copyWith({
     Memo? memo,
     List<Memo>? relatedMemo,
-    Trigger<MemoDetailPageResumeEvent>? backEvent,
+    bool? shouldGoBack,
   }) {
     return MemoDetailPageState(
       memo: memo ?? this.memo,
       relatedMemo: relatedMemo ?? this.relatedMemo,
-      resumeEvent: backEvent ?? this.resumeEvent,
+      shouldGoBack: shouldGoBack ?? this.shouldGoBack,
     );
   }
 }

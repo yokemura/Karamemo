@@ -26,9 +26,8 @@ class CreateMemoPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isAcceptable = ref.watch(
-        createMemoPageControllerProvider(parameter)
-            .select((value) => value.isAcceptable));
+    final isAcceptable = ref.watch(createMemoPageControllerProvider(parameter)
+        .select((value) => value.isAcceptable));
     final isSpicinessAvailable = ref.watch(
         createMemoPageControllerProvider(parameter)
             .select((value) => value.isSpicinessAvailable));
@@ -85,8 +84,9 @@ class CreateMemoPage extends HookConsumerWidget {
                 ),
                 onPressed: isAcceptable
                     ? () {
-                        final newMemo = pageController.saveMemo();
-                        context.pop(newMemo);
+                        pageController
+                            .saveMemo()
+                            .then((newMemo) => context.pop(newMemo));
                       }
                     : null,
                 child: const Text('登録'),

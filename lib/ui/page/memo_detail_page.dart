@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:karamemo/model/controller/memo_detail_page_controller.dart';
-import 'package:karamemo/model/state/memo_detail_page_state.dart';
 import 'package:karamemo/model/view_data/page_parameters.dart';
 import 'package:karamemo/ui/component/organism/memo_detail_combo.dart';
 
@@ -11,25 +11,35 @@ import '../route.dart';
 
 class MemoDetailPage extends HookConsumerWidget {
   const MemoDetailPage({
-    required this.memo,
+    required Memo memo,
     super.key,
-  });
+  }) : initialMemo = memo;
 
-  final Memo memo;
+  final Memo initialMemo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final relatedList = ref.watch(memoDetailPageControllerProvider(memo)
+    final relatedList = ref.watch(memoDetailPageControllerProvider
         .select((state) => state.relatedMemo));
+    final memo = ref.watch(memoDetailPageControllerProvider
+        .select((state) => state.memo));
     final controller =
-        ref.watch(memoDetailPageControllerProvider(memo).notifier);
-    final resumeEvent = ref.watch(
-        memoDetailPageControllerProvider(memo).select((s) => s.resumeEvent));
-    switch(resumeEvent.value) {
-      case MemoDetailPageResumeEvent.pop:
-        Future.microtask(() => context.pop());
-      default:
-        break; // will reload
+        ref.watch(memoDetailPageControllerProvider.notifier);
+    ref.listen(
+        memoDetailPageControllerProvider.select((s) => s.shouldGoBack),
+        (_, should) {
+      if (should) {
+        context.pop();
+      }
+    });
+
+    useEffect(() {
+      Future.microtask(() => controller.reload(initialMemo));
+      return null;
+    }, []);
+
+    if (memo == null) {
+      return const Scaffold();
     }
 
     return Scaffold(
@@ -52,7 +62,7 @@ class MemoDetailPage extends HookConsumerWidget {
                   originalMemo: memo,
                 );
                 final updatedMemo = await context.push(path, extra: parameter);
-                controller.triggerEvent(MemoDetailPageResumeEvent.reload);
+                controller.reload(updatedMemo as Memo);
               },
               icon: const Icon(Icons.edit)),
           IconButton(
@@ -65,7 +75,7 @@ class MemoDetailPage extends HookConsumerWidget {
                   originalMemo: memo.duplicated(),
                 );
                 await context.push(path, extra: parameter);
-                controller.triggerEvent(MemoDetailPageResumeEvent.pop);
+                controller.goBack();
               },
               icon: const Icon(Icons.copy)),
         ],
