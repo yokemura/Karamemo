@@ -61,23 +61,21 @@ class CreateMemoPage extends HookConsumerWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 96),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const FormSectionIndex(text: 'メニューの情報'),
-                      _ItemInfoForm(
-                        parameter: parameter,
-                        isSpicinessAvailable: isSpicinessAvailable,
-                        pageController: pageController,
-                      ),
-                      const FormSectionIndex(text: 'あなたの評価'),
-                      _JudgeForm(judge: judge, pageController: pageController),
-                    ],
-                  ),
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 24, 24, 96),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const FormSectionIndex(text: 'メニューの情報'),
+                    _ItemInfoForm(
+                      parameter: parameter,
+                      isSpicinessAvailable: isSpicinessAvailable,
+                      pageController: pageController,
+                    ),
+                    const FormSectionIndex(text: 'あなたの評価'),
+                    _JudgeForm(judge: judge, pageController: pageController),
+                  ],
                 ),
               ),
             ),

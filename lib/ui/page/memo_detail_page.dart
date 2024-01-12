@@ -62,7 +62,7 @@ class MemoDetailPage extends HookConsumerWidget {
                   originalMemo: memo,
                 );
                 final updatedMemo = await context.push(path, extra: parameter);
-                controller.reload(updatedMemo as Memo);
+                controller.reload(updatedMemo as Memo?);
               },
               icon: const Icon(Icons.edit)),
           IconButton(

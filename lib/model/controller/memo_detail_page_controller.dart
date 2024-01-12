@@ -22,8 +22,10 @@ class MemoDetailPageController extends StateNotifier<MemoDetailPageState> {
     goBack();
   }
 
-  void reload(Memo memo) {
-    state = state.copyWith(memo: memo);
+  void reload(Memo? memo) {
+    if (memo != null) {
+      state = state.copyWith(memo: memo);
+    }
   }
 
   void goBack() {
